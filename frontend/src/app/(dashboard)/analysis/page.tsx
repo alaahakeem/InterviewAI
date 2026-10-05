@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import TopBar from '@/components/shared/TopBar';
 import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
@@ -7,7 +7,7 @@ import { CheckCircle, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { CvAnalysis } from '@/types';
 
-export default function AnalysisPage() {
+function AnalysisContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const [data, setData] = useState<CvAnalysis | null>(null);
@@ -119,5 +119,13 @@ export default function AnalysisPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AnalysisPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AnalysisContent />
+    </Suspense>
   );
 }
